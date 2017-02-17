@@ -1,0 +1,76 @@
+package org.firstinspires.ftc.teamcode;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.media.AudioTrack;
+import android.view.View;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.*;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+/**
+ * Created by ashley.peake on 1/21/2017.
+ */
+
+@Autonomous(name = "ColorSensorReset", group = "LinearOpMode")
+
+public class ColorSensorReset extends LinearOpMode {
+
+    private ElapsedTime ServoTimer =  new ElapsedTime();
+
+
+    Servo RackPinion;
+    ColorSensor Rainbow;
+    
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        RackPinion = hardwareMap.servo.get("RackPinion");
+
+        // hsvValues is an array that will hold the hue, saturation, and value information.
+        float hsvValues[] = {0F, 0F, 0F};
+
+        // values is a reference to the hsvValues array.
+        final float values[] = hsvValues;
+
+        // get a reference to the RelativeLayout so we can change the background
+        // color of the Robot Controller app to match the hue detected by the RGB sensor.
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
+
+        // bPrevState and bCurrState represent the previous and current state of the button.
+        boolean bPrevState = false;
+        boolean bCurrState = false;
+        boolean LEDState = true;
+
+
+        // bLedOn represents the state of the LED.
+        boolean bLedOn = true;
+
+        // get a reference to our ColorSensor object.
+        Rainbow = hardwareMap.colorSensor.get("Rainbow");
+
+        // Set the LED in the beginning
+        Rainbow.enableLed(bLedOn);
+
+        // wait for the start button to be pressed.
+        waitForStart();
+
+        ServoTimer.reset();
+        while (ServoTimer.milliseconds() < 2000) {
+            RackPinion.setPosition(1.0);
+            sleep(2000);
+            RackPinion.setPosition(0.5);
+
+        }
+    }
+
+}
+
+ 
