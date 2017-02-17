@@ -1,0 +1,92 @@
+
+package org.firstinspires.ftc.teamcode;
+
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import  com.qualcomm.robotcore.hardware.Servo;
+
+
+
+@Autonomous(name="Red1", group="Linear Opmode")
+public class Red1 extends LinearOpMode {
+
+    // 1440 Ticks/Revolution
+
+    private ElapsedTime runtime = new ElapsedTime();
+
+    DcMotor Ten = null;
+    DcMotor Eight = null;
+    DcMotor Four = null;
+    DcMotor Two = null;
+    DcMotor Sweeper = null;
+    Servo ArmRelease;
+    Servo Clamp;
+    Servo BallRelease;
+
+
+    @Override
+    public void runOpMode() {
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        Ten = hardwareMap.dcMotor.get("Ten");
+        Eight = hardwareMap.dcMotor.get("Eight");
+        Four = hardwareMap.dcMotor.get("Four");
+        Two = hardwareMap.dcMotor.get("Two");
+        Sweeper = hardwareMap.dcMotor.get("Sweeper");
+        ArmRelease = hardwareMap.servo.get("ArmRelease");
+        Clamp = hardwareMap.servo.get("Clamp");
+        BallRelease = hardwareMap.servo.get("BallRelease");
+
+        Sweeper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        Two.setDirection(DcMotorSimple.Direction.REVERSE);
+        Four.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        ArmRelease.setPosition(0.9);
+        Clamp.setPosition(0.0);
+        BallRelease.setPosition(0.0);
+
+
+        waitForStart();
+        runtime.reset();
+
+        while (opModeIsActive()) {
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.update();
+            Sweeper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            Sweeper.setTargetPosition(7000); //This is the correct value
+            Sweeper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Sweeper.setPower(0.8);
+
+            while (Sweeper.isBusy()) {
+                Two.setPower(0.65);
+                Eight.setPower(0.8);
+            }
+
+            Two.setPower(0.0);
+            Eight.setPower(0.0);
+            Sweeper.setPower(0.0);
+
+            Sweeper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            Sweeper.setTargetPosition(0);
+            Sweeper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            while (runtime.time() < 30 || !isStopRequested()) {
+                Two.setPower(0.0);
+                Four.setPower(0.0);
+                Eight.setPower(0.0);
+                Ten.setPower(0.0);
+                Sweeper.setPower(0.0);
+            }
+        }
+
+    }
+
+}
+
