@@ -1,0 +1,105 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
+
+
+/*
+	Holonomic concepts from:
+	http://www.vexforum.com/index.php/12370-holonomic-drives-2-0-a-video-tutorial-by-cody/0
+   Robot wheel mapping:
+          X FRONT X
+        X           X
+      X  FL       FR  X
+              X
+             XXX
+              X
+      X  BL       BR  X
+        X           X
+          X       X
+*/
+@TeleOp(name = "DiagonalHolonomic", group = "Concept")
+//@Disabled
+public class DiagonalHolonomic extends OpMode {
+
+    DcMotor Two;
+    DcMotor Ten;
+    DcMotor Four;
+    DcMotor Eight;
+
+    /**
+     * Constructor
+     */
+    public DiagonalHolonomic() {
+
+    }
+
+    @Override
+    public void init() {
+
+
+		/*
+		 * Use the hardwareMap to get the dc motors and servos by name. Note
+		 * that the names of the devices must match the names used when you
+		 * configured your robot and created the configuration file.
+		 */
+
+
+        Two = hardwareMap.dcMotor.get("Two");
+        motorFrontLeft = hardwareMap.dcMotor.get("Ten");
+        motorBackLeft = hardwareMap.dcMotor.get("Eight");
+        motorBackRight = hardwareMap.dcMotor.get("Four");
+        //These work without reversing (Tetrix motors).
+        //AndyMark motors may be opposite, in which case uncomment these lines:
+        //motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        //motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        //motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        //motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+
+    }
+
+    @Override
+    public void loop() {
+
+
+        // left stick controls direction
+        // right stick X controls rotation
+
+        float gamepad1LeftY = -gamepad1.left_stick_y;
+        float gamepad1LeftX = gamepad1.left_stick_x;
+        float gamepad1RightX = gamepad1.right_stick_x;
+
+        // holonomic formulas
+
+        float FrontLeft = -gamepad1LeftY - gamepad1LeftX - gamepad1RightX;
+        float FrontRight = gamepad1LeftY - gamepad1LeftX - gamepad1RightX;
+        float BackRight = gamepad1LeftY + gamepad1LeftX - gamepad1RightX;
+        float BackLeft = -gamepad1LeftY + gamepad1LeftX - gamepad1RightX;
+
+        // clip the right/left values so that the values never exceed +/- 1
+        FrontRight = Range.clip(FrontRight, -1, 1);
+        FrontLeft = Range.clip(FrontLeft, -1, 1);
+        BackLeft = Range.clip(BackLeft, -1, 1);
+        BackRight = Range.clip(BackRight, -1, 1);
+
+        // write the values to the motors
+        motorFrontRight.setPower(FrontRight);
+        motorFrontLeft.setPower(FrontLeft);
+        motorBackLeft.setPower(BackLeft);
+        motorBackRight.setPower(BackRight);
+
+
+
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
+
+
+
+}
