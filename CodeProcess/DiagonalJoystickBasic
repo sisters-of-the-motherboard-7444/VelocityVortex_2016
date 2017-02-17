@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="Pushbot: "DiagonalChassisBasic", group="Tests")
-public class DiagonalChassisBasic extends OpMode {
+@TeleOp(name="Pushbot: "DiagonalJoystickBasic", group="Tests")
+public class DiagonalJoystickBasic extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
