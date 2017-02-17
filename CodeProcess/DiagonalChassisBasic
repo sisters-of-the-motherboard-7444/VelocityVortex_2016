@@ -1,0 +1,83 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+
+@TeleOp(name="Pushbot: "DiagonalChassisBasic", group="Tests")
+public class DiagonalChassisBasic extends OpMode {
+
+    private ElapsedTime runtime = new ElapsedTime();
+
+    public DcMotor Ten;
+    public DcMotor Two;
+    public DcMotor Eight;
+    public DcMotor Four;
+
+    @Override
+    public void init() {
+
+        Ten = hardwareMap.dcMotor.get("mtrTen");
+        Two = hardwareMap.dcMotor.get("mtrTwo");
+        Eight = hardwareMap.dcMotor.get("mtrSeven");
+        Four = hardwareMap.dcMotor.get("mtrFour");
+
+        Ten.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Two.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Eight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Four.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+    }
+
+    public void init_loop() {
+    }
+
+    @Override
+    public void start() {
+    }
+
+    @Override
+    public void loop() {
+
+        double left;
+        double right;
+        double lSide;
+        double rSide;
+
+        left = -gamepad1.left_stick_y;
+        right = -gamepad1.right_stick_y;
+        lSide = gamepad1.left_trigger;
+        rSide = gamepad1.right_trigger;
+
+        if(lSide < 0.2 && rSide < 0.2) {
+
+            Ten.setPower(left);
+            Eight.setPower(left);
+            Two.setPower(right);
+            Four.setPower(right);
+
+        }
+        else if(lSide > 0.2) {
+            Ten.setPower(-lSide);
+            Eight.setPower(lSide);
+            Two.setPower(lSide);
+            Four.setPower(-lSide);
+        }
+        else if(rSide > 0.2){
+            Ten.setPower(rSide);
+            Eight.setPower(-rSide);
+            Two.setPower(-rSide);
+            Four.setPower(rSide);
+        }
+
+    }
+
+
+    @Override
+    public void stop(){
+    }
+
+
+}
