@@ -19,17 +19,20 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class ColorSensor1 extends LinearOpMode {
 
-    private ElapsedTime ServoTimer =  new ElapsedTime();
+    private ElapsedTime ForwardTimer =  new ElapsedTime();
+    private ElapsedTime BackwardTimer = new ElapsedTime();
 
 
     Servo RackPinion;
     ColorSensor Rainbow;
 
-
     DcMotor Ten = null;
     DcMotor Eight = null;
     DcMotor Four = null;
     DcMotor Two = null;
+    Servo ArmRelease;
+    Servo Clamp;
+    Servo BallRelease;
 
 
     @Override
@@ -42,7 +45,9 @@ public class ColorSensor1 extends LinearOpMode {
         Eight = hardwareMap.dcMotor.get("Eight");
         Four = hardwareMap.dcMotor.get("Four");
         Two = hardwareMap.dcMotor.get("Two");
-
+        ArmRelease = hardwareMap.servo.get("ArmRelease");
+        Clamp = hardwareMap.servo.get("Clamp");
+        BallRelease = hardwareMap.servo.get("BallRelease");
 
         Two.setDirection(DcMotorSimple.Direction.REVERSE);
         Four.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -62,7 +67,6 @@ public class ColorSensor1 extends LinearOpMode {
         // bPrevState and bCurrState represent the previous and current state of the button.
         boolean bPrevState = false;
         boolean bCurrState = false;
-        boolean LEDState = true;
 
 
         // bLedOn represents the state of the LED.
@@ -73,6 +77,10 @@ public class ColorSensor1 extends LinearOpMode {
 
         // Set the LED in the beginning
         Rainbow.enableLed(bLedOn);
+
+        ArmRelease.setPosition(0.8);
+        Clamp.setPosition(0.0);
+        BallRelease.setPosition(0.0);
 
         // wait for the start button to be pressed.
         waitForStart();
@@ -89,45 +97,73 @@ public class ColorSensor1 extends LinearOpMode {
             telemetry.addData("Blue ", Rainbow.blue());
             telemetry.addData("Hue", hsvValues[0]);
 
-
             telemetry.update();
 
-            if (Rainbow.blue() >= 2) {
-                ServoTimer.reset();
-              while (ServoTimer.milliseconds() < 750) {
-                    Two.setPower(0.2);
+            if (Rainbow.red() >= 2) {
+                ForwardTimer.reset();
+              while (ForwardTimer.milliseconds() < 300) {
+                    Two.setPower(0.4);
                     Four.setPower(-0.2);
                     Eight.setPower(0.2);
-                    Ten.setPower(0.2);
+                    Ten.setPower(-0.2);
               }
+
                 Two.setPower(0.0);
-                Four.setPower(-0.0);
+                Four.setPower(0.0);
+                Eight.setPower(0.0);
+                Ten.setPower(0.0);
+
+                BackwardTimer.reset();
+                while (BackwardTimer.milliseconds() < 1000) {
+                    Two.setPower(-0.6);
+                    Four.setPower(0.4);
+                    Eight.setPower(-0.4);
+                    Ten.setPower(0.4);
+                }
+
+                Two.setPower(0.0);
+                Four.setPower(0.0);
                 Eight.setPower(0.0);
                 Ten.setPower(0.0);
 
             }
 
-           else if (Rainbow.red() >= 2) {
+           else if (Rainbow.blue() >= 2) {
 
                 RackPinion.setPosition(0.0);
                 sleep(3500);
                 RackPinion.setPosition(0.5);
 
-                ServoTimer.reset();
-                while (ServoTimer.milliseconds() < 750) {
-                    Two.setPower(0.2);
+                ForwardTimer.reset();
+                while (ForwardTimer.milliseconds() < 300) {
+                    Two.setPower(0.4);
                     Four.setPower(-0.2);
                     Eight.setPower(0.2);
-                    Ten.setPower(0.2);
+                    Ten.setPower(-0.2);
                }
+
                 Two.setPower(0.0);
-                Four.setPower(-0.0);
+                Four.setPower(0.0);
                 Eight.setPower(0.0);
                 Ten.setPower(0.0);
+
+                BackwardTimer.reset();
+                while (BackwardTimer.milliseconds() < 1000) {
+                    Two.setPower(-0.6);
+                    Four.setPower(0.4);
+                    Eight.setPower(-0.4);
+                    Ten.setPower(0.4);
+                }
+
+                Two.setPower(0.0);
+                Four.setPower(0.0);
+                Eight.setPower(0.0);
+                Ten.setPower(0.0);
+
             }
 
             Two.setPower(0.0);
-            Four.setPower(-0.0);
+            Four.setPower(0.0);
             Eight.setPower(0.0);
             Ten.setPower(0.0);
 
