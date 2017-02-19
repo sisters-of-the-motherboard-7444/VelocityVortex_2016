@@ -1,0 +1,134 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+
+
+@Autonomous(name="BallLaunch", group="Linear Opmode")
+public class BallLaunch extends LinearOpMode {
+
+    // 1440 Ticks/Revolution
+
+    private ElapsedTime runtime = new ElapsedTime();
+
+
+    DcMotor Ten = null;
+    DcMotor Eight = null;
+    DcMotor Four = null;
+    DcMotor Two = null;
+    DcMotor Sweeper = null;
+    DcMotor ColorBall = null;
+
+    Servo BallRelease;
+
+
+    @Override
+    public void runOpMode() {
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        Ten = hardwareMap.dcMotor.get("Ten");
+        Eight = hardwareMap.dcMotor.get("Eight");
+        Four = hardwareMap.dcMotor.get("Four");
+        Two = hardwareMap.dcMotor.get("Two");
+        Sweeper = hardwareMap.dcMotor.get("Sweeper");
+
+
+
+        ColorBall = hardwareMap.dcMotor.get("ColorBall");
+
+        BallRelease = hardwareMap.servo.get("BallRelease");
+
+        Sweeper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        Two.setDirection(DcMotorSimple.Direction.REVERSE);//This is just a guess
+        Four.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        BallRelease.setPosition(0);
+
+        waitForStart();
+        runtime.reset();
+
+        while (opModeIsActive()) {
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.update();
+
+            Sweeper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            Sweeper.setTargetPosition(1440); //This is the correct value
+            Sweeper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Sweeper.setPower(0.8);
+
+            while (Sweeper.isBusy()) {
+                Two.setPower(-0.8);
+                Eight.setPower(-0.8);
+                Ten.setPower(0.8);
+                Four.setPower(0.8);
+            }
+
+            Two.setPower(0.0);
+            Eight.setPower(0.0);
+            Ten.setPower(0.0);
+            Four.setPower(0.0);
+            Sweeper.setPower(0.0);
+
+            Sweeper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            Sweeper.setTargetPosition(0);
+            Sweeper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            Sweeper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            Sweeper.setTargetPosition(1440); //This is the correct value
+            Sweeper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Sweeper.setPower(0.8);
+
+            while (Sweeper.isBusy()) {
+                ColorBall.setPower(-1);
+            }
+            ColorBall.setPower(0);
+            Sweeper.setPower(0);
+
+            Sweeper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            Sweeper.setTargetPosition(0);
+            Sweeper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            BallRelease.setPosition(1);
+
+            sleep(1000);
+
+            BallRelease.setPosition(0);
+
+            Sweeper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            Sweeper.setTargetPosition(1440); //This is the correct value
+            Sweeper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Sweeper.setPower(0.8);
+
+
+            while (Sweeper.isBusy() ) {
+                ColorBall.setPower(-1);
+            }
+            ColorBall.setPower(0);
+            Sweeper.setPower(0);
+
+            Sweeper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            Sweeper.setTargetPosition(0);
+            Sweeper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            while (runtime.time() < 30 || !isStopRequested()) {
+                Two.setPower(0.0);
+                Four.setPower(0.0);
+                Eight.setPower(0.0);
+                Ten.setPower(0.0);
+                Sweeper.setPower(0.0);
+            }
+        }
+
+    }
+
+}
