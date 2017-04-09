@@ -47,14 +47,14 @@ public class DRIVECONTROL extends OpMode {
         double ClampStay = 0.0;
 
         float gamepad1LeftY = -gamepad1.left_stick_y;
-        float gamepad1LeftX;
-
         float gamepad1RightX = gamepad1.right_stick_x;
-
-        float FrontLeft = -gamepad1LeftY - gamepad1LeftX - gamepad1RightX;
-        float FrontRight = gamepad1LeftY - gamepad1LeftX - gamepad1RightX;
-        float BackRight = gamepad1LeftY + gamepad1LeftX - gamepad1RightX;
-        float BackLeft = -gamepad1LeftY + gamepad1LeftX - gamepad1RightX;
+        float Turnclock = -gamepad1.right_trigger;
+        float TurnCclock = gamepad1.left_trigger;
+        
+        float FrontLeft = -gamepad1LeftY - gamepad1LeftX + Turnclock + TurnCclock;
+        float FrontRight = gamepad1LeftY - gamepad1LeftX + Turnclock + TurnCclock;
+        float BackRight = gamepad1LeftY + gamepad1LeftX + Turnclock + TurnCclock;
+        float BackLeft = -gamepad1LeftY + gamepad1LeftX + Turnclock + TurnCclock;
 
         FrontRight = Range.clip(FrontRight, -1, 1);
         FrontLeft = Range.clip(FrontLeft, -1, 1);
@@ -74,4 +74,5 @@ public class DRIVECONTROL extends OpMode {
         Ten.setPower(FrontLeft / 2);
         Eight.setPower(BackLeft / 2);
         Four.setPower(BackRight / 2);
+        
         }
