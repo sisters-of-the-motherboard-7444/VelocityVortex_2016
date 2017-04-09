@@ -64,7 +64,11 @@ public class DRIVECONTROL extends OpMode {
 /* Without accounting for original reverse, all off of gamepad1... 
       Forward: front left +, front right -; back right -; back left +;
       Backward: front left -; front right +; back right +; back left +;
-      Left: 
+      Left: front left +; front right +; back right -; back left -;
+      Right: front left -; front right -; back right +; back left +;
+      Clockwise: all -;
+      Counterclockwise: all +;
+*/
 
         Two.setPower(FrontRight / 2);
         Ten.setPower(FrontLeft / 2);
