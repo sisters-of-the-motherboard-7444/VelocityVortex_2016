@@ -1,8 +1,8 @@
 /* Import statements should fill in once
 we plug the code into Android Studio */
 
-@TeleOp(name = "DRIVECONTROL", group = "OpModes")
-public class DRIVECONTROL extends OpMode {
+@TeleOp(name = "FixDriveStraight with equations", group = "OpModes")
+public class FixDriveStraightEquations extends OpMode {
 
     DcMotor Two;
     DcMotor Ten;
