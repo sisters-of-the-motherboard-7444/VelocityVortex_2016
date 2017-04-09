@@ -1,0 +1,73 @@
+/* Import statements should fill in once
+we plug the code into Android Studio */
+
+@TeleOp(name = "DRIVECONTROL", group = "OpModes")
+public class DRIVECONTROL extends OpMode {
+
+    DcMotor Two;
+    DcMotor Ten;
+    DcMotor Four;
+    DcMotor Eight;
+
+    DcMotor Lift;
+    DcMotor ColorBall;
+    DcMotor Sweeper;
+
+    Servo RackPinion;
+    Servo ArmRelease;
+    Servo BallRelease;
+    Servo Clamp;
+
+    public DRIVECONTROL() {
+
+    }
+
+    @Override
+    public void init() {
+
+        Two = hardwareMap.dcMotor.get("Two");
+        Ten = hardwareMap.dcMotor.get("Ten");
+        Eight = hardwareMap.dcMotor.get("Eight");
+        Four = hardwareMap.dcMotor.get("Four");
+
+        Lift = hardwareMap.dcMotor.get("Lift");
+        ColorBall = hardwareMap.dcMotor.get("ColorBall");
+        Sweeper = hardwareMap.dcMotor.get("Sweeper");
+
+        RackPinion = hardwareMap.servo.get("RackPinion");
+        ArmRelease = hardwareMap.servo.get("ArmRelease");
+        BallRelease = hardwareMap.servo.get("BallRelease");
+        Clamp = hardwareMap.servo.get("Clamp");
+        
+    }
+
+    @Override
+    public void loop() {
+        
+        double ClampStay = 0.0;
+
+        float gamepad1LeftY = -gamepad1.left_stick_y;
+        float gamepad1LeftX;
+
+        float gamepad1RightX = gamepad1.right_stick_x;
+
+        float FrontLeft = -gamepad1LeftY - gamepad1LeftX - gamepad1RightX;
+        float FrontRight = gamepad1LeftY - gamepad1LeftX - gamepad1RightX;
+        float BackRight = gamepad1LeftY + gamepad1LeftX - gamepad1RightX;
+        float BackLeft = -gamepad1LeftY + gamepad1LeftX - gamepad1RightX;
+
+        FrontRight = Range.clip(FrontRight, -1, 1);
+        FrontLeft = Range.clip(FrontLeft, -1, 1);
+        BackLeft = Range.clip(BackLeft, -1, 1);
+        BackRight = Range.clip(BackRight, -1, 1);
+
+/* Without accounting for original reverse, all off of gamepad1... 
+      Forward: front left +, front right -; back right -; back left +;
+      Backward: front left -; front right +; back right +; back left +;
+      Left: 
+
+        Two.setPower(FrontRight / 2);
+        Ten.setPower(FrontLeft / 2);
+        Eight.setPower(BackLeft / 2);
+        Four.setPower(BackRight / 2);
+        }
