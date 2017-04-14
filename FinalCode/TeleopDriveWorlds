@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -51,11 +48,16 @@ public class TeleopDriveWorlds extends OpMode {
         BallRelease = hardwareMap.servo.get("BallRelease");
         Clamp = hardwareMap.servo.get("Clamp");
 
+        ArmRelease.setPosition(0.8);
+        BallRelease.setPosition(0);
+        Clamp.setPosition(0.0);
+        Lift.setPower(0.0);
+
     }
 
     @Override
     public void loop() {
-        
+
 
         float gamepad1LeftY = -gamepad1.left_stick_y;
         float gamepad1RightX = gamepad1.right_stick_x;
@@ -87,17 +89,17 @@ public class TeleopDriveWorlds extends OpMode {
         Four.setPower(BackRight / 2);
 
         if(gamepad1.a){
-            BallRelease.setPosition(0);
+            BallRelease.setPosition(0.5);
         }
         else {
-            BallRelease.setPosition(0.5);
+            BallRelease.setPosition(0);
         }
 
         if(gamepad2.a){
             ArmRelease.setPosition(0.4);
         }
         else {
-            ArmRelease.setPosition(0);
+            ArmRelease.setPosition(0.8);
         }
 
         if(gamepad2.x){
